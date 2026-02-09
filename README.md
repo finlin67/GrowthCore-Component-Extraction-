@@ -1,11 +1,18 @@
-<div align="center">
+# GrowthCore Component Extraction
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+## Description
+This project is a faithful React + Tailwind migration of the GrowthCore SaaS landing page, featuring a complex extracted component: `GrowthMarketingTile`. The `GrowthMarketingTile` is a 600x600 animated data visualization module that demonstrates net retention, user avatars, and growth metrics with entrance animations. It simulates a "production-ready" dashboard element found in modern enterprise SaaS applications.
 
-  <h1>Built with AI Studio</h2>
+## Tech Stack
+- **React 18+** (via Vite/CRA structure)
+- **Tailwind CSS** (Styling engine)
+- **Framer Motion** (Animation library for entrance effects and floating elements)
+- **Lucide React** (Iconography)
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## Usage
+1. Ensure dependencies are installed: `npm install framer-motion lucide-react clsx tailwind-merge`
+2. Run the development server.
+3. Observe the entrance animations on the hero section tile upon page load.
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
-
-</div>
+## App Name
+GrowthCore Visualization Engine
