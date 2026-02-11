@@ -8,7 +8,7 @@ import {
   UserX, 
   CheckCircle,
 } from 'lucide-react';
-import GrowthMarketingTile from './components/GrowthMarketingTile';
+import CustomerMarketingTile from './components/CustomerMarketingTile';
 import DashboardPreview from './components/DashboardPreview';
 
 export default function App() {
@@ -71,7 +71,7 @@ export default function App() {
             </div>
 
             {/* Right Visual - Replaced with Component */}
-            <GrowthMarketingTile />
+            <CustomerMarketingTile />
           </div>
         </section>
 

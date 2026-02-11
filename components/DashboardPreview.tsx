@@ -1,28 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Home, 
-  BarChart3, 
-  Users, 
-  Settings, 
-  Search, 
   Bell, 
-  ArrowUpRight, 
-  Wallet,
+  Search, 
   Activity,
   Globe,
+  ArrowUpRight,
+  Menu,
+  ShieldCheck,
   Zap
 } from 'lucide-react';
 
 export default function DashboardPreview() {
-  // Data for the main chart
+  // Chart Data & Path Generation
   const chartData = [40, 65, 55, 80, 72, 95, 88, 110, 102, 125, 115, 140];
   const maxVal = Math.max(...chartData);
   const points = chartData.map((val, i) => {
     const x = (i / (chartData.length - 1)) * 100;
-    const y = 100 - (val / maxVal) * 80; // 80% height max
+    const y = 100 - (val / maxVal) * 80; 
     return `${x},${y}`;
   }).join(' ');
   
@@ -30,244 +27,191 @@ export default function DashboardPreview() {
   const linePath = `M0,${100 - (chartData[0] / maxVal) * 80} ${points.split(' ').map(p => `L${p}`).join(' ')}`;
 
   return (
-    <div className="w-full max-w-[1100px] mx-auto p-1 rounded-3xl bg-gradient-to-b from-white/10 to-white/5 shadow-2xl border border-white/10 backdrop-blur-sm">
-      <div className="w-full h-[700px] bg-slate-950 rounded-[22px] border border-white/5 flex overflow-hidden relative selection:bg-purple-500/30">
-        
-        {/* Sidebar */}
-        <div className="hidden md:flex w-20 flex-col items-center py-6 border-r border-white/5 gap-8 bg-slate-900/50">
-          <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
-            <Zap className="text-white w-6 h-6" fill="currentColor" />
+    <div className="w-full max-w-[600px] aspect-square mx-auto rounded-[32px] bg-slate-950 border border-white/10 relative overflow-hidden flex flex-col shadow-2xl group select-none ring-1 ring-white/5">
+       {/* Background Ambient Effects */}
+       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(168,85,247,0.12),transparent_45%)] pointer-events-none" />
+       <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent pointer-events-none" />
+       
+       {/* HEADER (Top 15%) */}
+       <header className="h-[15%] px-8 flex items-center justify-between border-b border-white/5 bg-slate-900/40 backdrop-blur-md z-20">
+          <div className="flex items-center gap-3">
+             <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center border border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.15)]">
+               <Zap className="w-5 h-5 text-purple-400" fill="currentColor" />
+             </div>
+             <div className="flex flex-col">
+                <h3 className="text-white font-bold text-lg leading-tight tracking-tight">Analytics</h3>
+                <p className="text-slate-500 text-[11px] font-bold uppercase tracking-wider">Real-time Overview</p>
+             </div>
           </div>
-          <div className="flex flex-col gap-6 w-full items-center">
-            {[Home, BarChart3, Users, Wallet, Settings].map((Icon, i) => (
-              <button key={i} className={`p-3 rounded-xl transition-all ${i === 1 ? 'bg-white/10 text-white' : 'text-slate-500 hover:text-slate-300 hover:bg-white/5'}`}>
-                <Icon className="w-5 h-5" />
-              </button>
-            ))}
+          <div className="flex items-center gap-3">
+             <button className="p-2.5 rounded-full hover:bg-white/5 text-slate-400 hover:text-white transition-colors">
+                <Search className="w-5 h-5" />
+             </button>
+             <button className="p-2.5 rounded-full hover:bg-white/5 text-slate-400 hover:text-white transition-colors relative group">
+                <Bell className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border border-slate-950 shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
+             </button>
           </div>
-          <div className="mt-auto">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 p-[2px]">
-               <img src="https://picsum.photos/100/100?random=99" className="rounded-full w-full h-full border-2 border-slate-950 object-cover" alt="Profile" />
-            </div>
-          </div>
-        </div>
+       </header>
 
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col min-w-0 bg-slate-950/80">
-          {/* Header */}
-          <header className="h-16 border-b border-white/5 flex items-center justify-between px-6 md:px-8">
-            <div className="flex items-center gap-4 text-sm font-medium text-slate-400">
-              <span className="text-slate-200">Overview</span>
-              <span className="text-slate-700">/</span>
-              <span className="hover:text-slate-200 cursor-pointer transition-colors">Analytics</span>
-            </div>
-            <div className="flex items-center gap-4">
-               <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-slate-400 text-sm focus-within:bg-white/10 transition-colors">
-                  <Search className="w-4 h-4" />
-                  <input className="bg-transparent border-none outline-none w-32 placeholder:text-slate-600" placeholder="Search..." />
-               </div>
-               <button className="relative p-2 text-slate-400 hover:text-white transition-colors">
-                 <Bell className="w-5 h-5" />
-                 <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 border-2 border-slate-950"></span>
-               </button>
-            </div>
-          </header>
-
-          {/* Scrollable Area */}
-          <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 custom-scrollbar">
-            
-            {/* Top Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Card 1 */}
-              <motion.div 
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                className="p-5 rounded-2xl bg-slate-900 border border-white/5 relative overflow-hidden group hover:border-white/10 transition-colors"
-              >
-                 <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                    <Wallet className="w-24 h-24 text-purple-500 -mr-8 -mt-8 rotate-12" />
-                 </div>
-                 <div className="flex flex-col gap-4 relative z-10">
-                    <div className="flex items-center gap-3 text-slate-400 text-sm font-medium">
-                      <div className="p-2 rounded-lg bg-purple-500/10 text-purple-400">
-                        <Wallet className="w-4 h-4" />
-                      </div>
-                      Total Revenue
-                    </div>
-                    <div>
-                      <div className="text-3xl font-bold text-white tracking-tight">$124,592</div>
-                      <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold mt-1">
-                        <span className="px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-1">
-                          <ArrowUpRight className="w-3 h-3" /> 12.5%
-                        </span>
-                        <span className="text-slate-500 font-medium">vs last month</span>
-                      </div>
-                    </div>
-                 </div>
-              </motion.div>
-
-              {/* Card 2 */}
-              <motion.div 
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="p-5 rounded-2xl bg-slate-900 border border-white/5 relative overflow-hidden group hover:border-white/10 transition-colors"
-              >
-                 <div className="flex flex-col gap-4 relative z-10">
-                    <div className="flex items-center gap-3 text-slate-400 text-sm font-medium">
-                      <div className="p-2 rounded-lg bg-blue-500/10 text-blue-400">
-                        <Activity className="w-4 h-4" />
-                      </div>
-                      Active Sessions
-                    </div>
-                    <div>
-                      <div className="text-3xl font-bold text-white tracking-tight">1,842</div>
-                      <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold mt-1">
-                        <span className="px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-1">
-                          <ArrowUpRight className="w-3 h-3" /> 4.2%
-                        </span>
-                        <span className="text-slate-500 font-medium">vs last hour</span>
-                      </div>
-                    </div>
-                 </div>
-                 {/* Decorative Pulse */}
-                 <div className="absolute bottom-4 right-4 flex gap-1 items-end h-8">
-                    {[40, 70, 45, 90, 60, 80, 50].map((h, i) => (
-                      <motion.div 
-                        key={i}
-                        animate={{ height: [h + "%", (h * 0.5) + "%", h + "%"] }}
-                        transition={{ duration: 2, repeat: Infinity, delay: i * 0.1, ease: "easeInOut" }}
-                        className="w-1.5 bg-blue-500/20 rounded-t-sm"
-                        style={{ height: `${h}%` }}
-                      />
-                    ))}
-                 </div>
-              </motion.div>
-
-              {/* Card 3 */}
-              <motion.div 
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="p-5 rounded-2xl bg-slate-900 border border-white/5 relative overflow-hidden group hover:border-white/10 transition-colors"
-              >
-                 <div className="flex flex-col gap-4 relative z-10">
-                    <div className="flex items-center gap-3 text-slate-400 text-sm font-medium">
-                      <div className="p-2 rounded-lg bg-pink-500/10 text-pink-400">
-                        <Globe className="w-4 h-4" />
-                      </div>
-                      Global Reach
-                    </div>
-                    <div>
-                      <div className="text-3xl font-bold text-white tracking-tight">24 Countries</div>
-                      <div className="flex items-center gap-2 text-pink-400 text-xs font-bold mt-1">
-                        <span className="px-1.5 py-0.5 rounded bg-pink-500/10 border border-pink-500/20 flex items-center gap-1">
-                          <ArrowUpRight className="w-3 h-3" /> 2 New
-                        </span>
-                        <span className="text-slate-500 font-medium">this week</span>
-                      </div>
-                    </div>
-                 </div>
-              </motion.div>
-            </div>
-
-            {/* Main Chart Area */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="w-full h-80 rounded-2xl bg-slate-900 border border-white/5 p-6 relative flex flex-col"
-            >
-               <div className="flex justify-between items-start mb-6">
-                 <div>
-                    <h3 className="text-lg font-bold text-white">Revenue Growth</h3>
-                    <p className="text-slate-500 text-sm">Year over year performance</p>
-                 </div>
-                 <div className="flex gap-2">
-                    {['1D', '1W', '1M', '1Y'].map(t => (
-                      <button key={t} className={`px-3 py-1 text-xs font-bold rounded-lg transition-colors ${t === '1M' ? 'bg-purple-500 text-white shadow-lg shadow-purple-500/20' : 'text-slate-500 hover:bg-white/5'}`}>
-                        {t}
-                      </button>
-                    ))}
-                 </div>
-               </div>
-               
-               <div className="flex-1 relative">
-                  <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    <defs>
-                      <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#a855f7" stopOpacity="0.4" />
-                        <stop offset="100%" stopColor="#a855f7" stopOpacity="0" />
-                      </linearGradient>
-                    </defs>
-                    <motion.path 
-                      d={areaPath} 
-                      fill="url(#chartGradient)" 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 1, delay: 0.5 }}
-                    />
-                    <motion.path 
-                      d={linePath} 
-                      fill="none" 
-                      stroke="#a855f7" 
-                      strokeWidth="0.8" 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round"
-                      initial={{ pathLength: 0 }}
-                      whileInView={{ pathLength: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 2, ease: "easeOut" }}
-                    />
-                  </svg>
-
-                  {/* Horizontal Grid Lines */}
-                  <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
-                    {[0, 1, 2, 3, 4].map(i => (
-                      <div key={i} className="w-full h-px bg-white/5" />
-                    ))}
-                  </div>
-               </div>
-            </motion.div>
-
-            {/* List Section */}
-            <div className="rounded-2xl bg-slate-900 border border-white/5 p-6">
-              <h3 className="text-lg font-bold text-white mb-4">Recent Transactions</h3>
-              <div className="flex flex-col gap-4">
-                {[1, 2, 3].map((i) => (
-                  <motion.div 
-                    key={i}
-                    initial={{ x: -20, opacity: 0 }}
-                    whileInView={{ x: 0, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.4 + (i * 0.1) }}
-                    className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors group cursor-pointer"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-full bg-slate-800 border border-white/5 flex items-center justify-center overflow-hidden">
-                        <img src={`https://picsum.photos/100/100?random=${10+i}`} alt="User" className="w-full h-full object-cover" />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-sm font-bold text-white group-hover:text-purple-400 transition-colors">Enterprise Plan Upgrade</span>
-                        <span className="text-xs text-slate-500">Just now • Acme Corp</span>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm font-bold text-white">+$2,499.00</div>
-                      <div className="text-xs text-emerald-500">Completed</div>
-                    </div>
-                  </motion.div>
+       {/* HERO: Chart (Centered Optical Focus) */}
+       <div className="flex-1 flex flex-col justify-center px-8 relative z-10 pt-4">
+          <div className="flex justify-between items-end mb-4">
+             <div>
+               <motion.h2 
+                 initial={{ opacity: 0, y: 10 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 className="text-4xl font-black text-white tracking-tight"
+               >
+                 $124,592
+               </motion.h2>
+               <motion.div 
+                 initial={{ opacity: 0, x: -10 }}
+                 whileInView={{ opacity: 1, x: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: 0.1 }}
+                 className="flex items-center gap-2 mt-2"
+               >
+                 <span className="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-2 py-0.5 rounded-md border border-emerald-500/20 flex items-center gap-1">
+                   <ArrowUpRight className="w-3 h-3" /> +12.5%
+                 </span>
+                 <span className="text-slate-500 text-sm font-medium">Revenue Growth</span>
+               </motion.div>
+             </div>
+             
+             {/* Time Filters */}
+             <div className="flex gap-1 bg-white/5 p-1 rounded-lg border border-white/5">
+                {['1D','1W','1M'].map((t,i) => (
+                   <button key={t} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${i===1 ? 'bg-purple-500 text-white shadow-lg shadow-purple-500/20' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
+                      {t}
+                   </button>
                 ))}
-              </div>
-            </div>
-
+             </div>
           </div>
-        </div>
-      </div>
+
+          {/* Chart Graphic */}
+          <div className="h-44 w-full relative">
+              <svg className="w-full h-full overflow-visible" viewBox="0 0 100 100" preserveAspectRatio="none">
+                 <defs>
+                    <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
+                       <stop offset="0%" stopColor="#a855f7" stopOpacity="0.4" />
+                       <stop offset="100%" stopColor="#a855f7" stopOpacity="0" />
+                    </linearGradient>
+                 </defs>
+                 <motion.path
+                    d={areaPath}
+                    fill="url(#chartFill)"
+                    initial={{ opacity: 0, d: "M0,100 L100,100 Z" }}
+                    whileInView={{ opacity: 1, d: areaPath }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                 />
+                 <motion.path
+                    d={linePath}
+                    fill="none"
+                    stroke="#c084fc"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+                 />
+              </svg>
+              
+              {/* Interactive Point Simulation */}
+              <motion.div 
+                 className="absolute top-[20%] right-[30%] flex flex-col items-center pointer-events-none"
+                 initial={{ opacity: 0, y: 10 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: 1.8 }}
+              >
+                 <div className="w-3 h-3 bg-slate-950 border-2 border-purple-400 rounded-full shadow-[0_0_15px_rgba(168,85,247,0.8)] z-20" />
+                 <div className="absolute -top-9 bg-slate-800 text-[10px] font-bold text-white px-2 py-1 rounded border border-white/10 shadow-xl whitespace-nowrap z-10 flex flex-col items-center">
+                    $132,400
+                    <div className="w-2 h-2 bg-slate-800 border-r border-b border-white/10 rotate-45 -mb-4 absolute -bottom-1" />
+                 </div>
+                 <div className="absolute top-3 w-px h-28 bg-gradient-to-b from-purple-500/50 to-transparent border-l border-dashed border-purple-500/30" />
+              </motion.div>
+          </div>
+       </div>
+
+       {/* SECONDARY METRICS (Stacked) */}
+       <div className="px-8 flex flex-col gap-3 pb-6 relative z-10">
+          <MetricRow 
+             icon={Activity} 
+             color="blue" 
+             label="Active Sessions" 
+             value="1,842" 
+             trend="+4.2%" 
+             delay={0.2}
+          />
+          <MetricRow 
+             icon={Globe} 
+             color="pink" 
+             label="Global Reach" 
+             value="24 Countries" 
+             trend="+2 New" 
+             delay={0.4}
+          />
+       </div>
+
+       {/* FOOTER (Bottom 15%) */}
+       <footer className="h-[15%] border-t border-white/5 bg-slate-900/40 backdrop-blur-md px-8 flex items-center justify-between text-xs font-medium text-slate-500">
+          <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
+             <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+             <span className="text-slate-400">System Secure</span>
+          </div>
+          <div className="flex items-center gap-6">
+             <button className="hover:text-white transition-colors flex items-center gap-2">
+                <Menu className="w-4 h-4" />
+                <span className="hidden sm:inline">Menu</span>
+             </button>
+          </div>
+       </footer>
     </div>
   );
+}
+
+interface MetricRowProps {
+  icon: React.ElementType;
+  color: 'blue' | 'pink' | 'purple';
+  label: string;
+  value: string;
+  trend: string;
+  delay: number;
+}
+
+function MetricRow({ icon: Icon, color, label, value, trend, delay }: MetricRowProps) {
+  const colorStyles = {
+    blue: "text-blue-400 bg-blue-500/10 border-blue-500/20 shadow-[0_0_10px_rgba(59,130,246,0.1)]",
+    pink: "text-pink-400 bg-pink-500/10 border-pink-500/20 shadow-[0_0_10px_rgba(236,72,153,0.1)]",
+    purple: "text-purple-400 bg-purple-500/10 border-purple-500/20",
+  }[color];
+
+  return (
+    <motion.div 
+      initial={{ x: -20, opacity: 0 }}
+      whileInView={{ x: 0, opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay, type: "spring", stiffness: 100 }}
+      className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-800/40 border border-white/5 hover:border-white/10 hover:bg-white/5 transition-all cursor-pointer group"
+    >
+       <div className="flex items-center gap-3.5">
+          <div className={`p-2 rounded-xl border ${colorStyles} group-hover:scale-110 transition-transform duration-300`}>
+             <Icon className="w-4 h-4" />
+          </div>
+          <span className="text-slate-300 font-medium text-sm group-hover:text-white transition-colors">{label}</span>
+       </div>
+       <div className="flex items-center gap-3">
+          <span className="text-white font-bold text-base tracking-tight">{value}</span>
+          <span className={`text-[11px] font-bold px-1.5 py-0.5 rounded bg-white/5 ${color === 'pink' ? 'text-pink-400' : 'text-blue-400'}`}>
+             {trend}
+          </span>
+       </div>
+    </motion.div>
+  )
 }
